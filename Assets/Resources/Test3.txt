@@ -1,0 +1,6 @@
+ReGap,5,0,Dung
+ReGap,0,5,Dung
+ReVua,5,0,TiepTuc
+ReVua,0,5,TiepTuc
+ReNhe,5,0,TiepTuc
+ReNhe,0,5,TiepTuc
