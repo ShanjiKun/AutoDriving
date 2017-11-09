@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - ObjectManager
+  - Enemy
+  - NearCamera
+  - Crossroads
+  - Lane
+  - Street
+  - TrafficLights
   layers:
   - Default
   - TransparentFX

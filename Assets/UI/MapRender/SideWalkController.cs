@@ -19,7 +19,7 @@ public class SideWalkController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		// Set up layout
-		setupLayout ();
+//		setupLayout ();
 	}
 	
 	// Update is called once per frame

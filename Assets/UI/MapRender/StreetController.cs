@@ -34,12 +34,12 @@ public class StreetController : MonoBehaviour {
 
 	//	Awake
 	void Awake(){
-		initialStreetStyle();
+//		initialStreetStyle();
 	}
 
 	// Use this for initialization
 	void Start () {
-		setupLayout();
+//		setupLayout();
 	}
 	
 	// Update is called once per frame
