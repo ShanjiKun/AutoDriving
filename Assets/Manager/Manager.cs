@@ -34,6 +34,7 @@ public class Manager : MonoBehaviour {
 //			Camera nearCamera = GameObject.FindGameObjectWithTag ("NearCamera").GetComponent<Camera>();
 //			Vector3 newPos = nearCamera.ScreenToWorldPoint (Input.mousePosition);
 //			enemy.transform.position = new Vector2 (newPos.x, newPos.y);
+			//	
 			detectSelectedStreet();
 		}
 	}
@@ -69,6 +70,9 @@ public class Manager : MonoBehaviour {
 
 		//	Show Enemy test case on selected street
 		showEnemyTestCase();
+
+		//	Remove selected street
+		selectedStreet = null;
 	}
 
 	//	Show enemy test case

@@ -16,6 +16,7 @@ TagManager:
   - EnemyTestCase_A_V
   - EnemyTestCase_B_V
   - DetectMouseDown
+  - CustomLog
   layers:
   - Default
   - TransparentFX

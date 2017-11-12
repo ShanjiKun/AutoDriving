@@ -88,9 +88,15 @@ public class Car : MonoBehaviour {
 	//	Constant
 	private float numYperFrame = (float)1/540;	//	speed 1km/h move 1/540 Y in a frame
 
+	//	Custom log
+	private CustomLog customLog;
+
 	// Call first
 	void Awake()
 	{
+		//	Get Custom log
+		customLog = GameObject.FindGameObjectWithTag("CustomLog").GetComponent<CustomLog>();
+
 		//	Setup FPS
 		QualitySettings.vSyncCount = 0;  // VSync must be disabled
 		Application.targetFrameRate = 30;
@@ -108,14 +114,9 @@ public class Car : MonoBehaviour {
 		bool isTrainingSuccess = AIManager.TrainSystem();
 		if (isTrainingSuccess) {
 			print ("Training data ready!");
+			customLog.log ("Training data ready!");
 			runable = true;
 		}
-
-		//	Test train data
-//		List<string> trainData = AIManager.testTrainSystem();
-//		foreach (string line in trainData) {
-//			print (line);
-//		}
 	}
 
 	// Use this for initialization
@@ -238,7 +239,7 @@ public class Car : MonoBehaviour {
 	void CARFastUp()
 	{
 		
-		if (!isIncSpeed)
+		if (!isIncSpeed || isInertiaStop)
 			return;
 		
 		float _1per30Speed = Speed_KMH / 30f;
@@ -404,7 +405,7 @@ public class Car : MonoBehaviour {
 	//
 	void onTriggerEnemy(GameObject enemy)
 	{
-		if (isResolving || isInertiaStop)
+		if (isResolving || isInertiaStop || isTurn)
 			return;
 		
 		isResolving = true;
@@ -439,7 +440,10 @@ public class Car : MonoBehaviour {
 		string strAhead = aheadArea.ToString ();
 		string strBehind = behindArea.ToString ();
 
+		print ("______");
+		customLog.log ("____");
 		print (strDistance + " " + strSpeed + " " + strLeft + " " + strRight + " " + strAhead + " " + strBehind);
+		customLog.log (strDistance + " " + strSpeed + " " + strLeft + " " + strRight + " " + strAhead + " " + strBehind);
 		List<string> results = AIManager.getDecisions( strDistance, strSpeed, strLeft, strRight, strAhead, strBehind);
 		if (results == null || results.Count <= 0) {
 			print ("Unknown decision!!");
@@ -447,7 +451,6 @@ public class Car : MonoBehaviour {
 		}
 
 		printResult (results);
-		print ("_____________________________________");
 
 		//	Reset prev decision
 		dec1 = dec2 = dec3 = "";
@@ -481,6 +484,7 @@ public class Car : MonoBehaviour {
 			isInertiaStop = false;
 		} else {
 			print ("Can't make a decision");
+			customLog.log ("Can't make a decision");
 			isInertiaStop = true;
 		}
 	}
@@ -664,8 +668,6 @@ public class Car : MonoBehaviour {
 				case "EnemyTestCase_A_V":
 				case "EnemyTestCase_B_V":
 					{
-						print (1);
-//						print (other.gameObject.GetComponent<EnemyTestCase> ().testCaseData);
 						break;
 					}
 				case "Crossroads":
@@ -675,7 +677,6 @@ public class Car : MonoBehaviour {
 					break;
 				case "Enemy":
 					{
-						print (2);
 						AHEADHandleEnterEnemy (other.gameObject);
 					}
 					break;
@@ -736,6 +737,7 @@ public class Car : MonoBehaviour {
 				default:
 					{
 						print ("Body enter");
+						customLog.log ("Body enter");
 						BODYHandleEnterAnythingElse ();
 						break;
 					}
@@ -756,13 +758,10 @@ public class Car : MonoBehaviour {
 				case "EnemyTestCase_A_V":
 				case "EnemyTestCase_B_V":
 					{
-//						print (1);
-//						print (other.gameObject.GetComponent<EnemyTestCase> ().testCaseData);
 						break;
 					}
 				case "Enemy":
 					{
-//						print (2);
 						AHEADHandleStayEnemy (other.gameObject);
 					}
 					break;
@@ -881,9 +880,14 @@ public class Car : MonoBehaviour {
 		if (results [0] == NaiveBayes.QD1_GIAMREPHAI || results [0] == NaiveBayes.QD1_GIAMRETRAI) {
 			print ("Dec1: " + results [0]);	
 			print ("Dec2: " + results [1]);	
-			print ("Dec3: " + results [2]);	
+			print ("Dec3: " + results [2]);
+
+			customLog.log ("Dec1: " + results [0]);	
+			customLog.log ("Dec2: " + results [1]);	
+			customLog.log ("Dec3: " + results [2]);	
 		} else {
 			print ("Dec1: " + results [0]);	
+			customLog.log ("Dec1: " + results [0]);	
 		}
 	}
 }
