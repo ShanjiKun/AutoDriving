@@ -18,16 +18,16 @@ public class SystemTrainingManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		string path1 = PlayerPrefs.GetString("Path1");
-		string path2 = PlayerPrefs.GetString("Path2");
-		string path3 = PlayerPrefs.GetString("Path3");
+//		string path1 = PlayerPrefs.GetString("Path1");
+//		string path2 = PlayerPrefs.GetString("Path2");
+//		string path3 = PlayerPrefs.GetString("Path3");
 
-		bool isTrainingSuccess = AIManager.TrainSystem(path1, path2, path3);
-		if (isTrainingSuccess) {
-			print ("Training data ready!");
-		} else {
-			print ("Training data Failed :(");
-		}
+//		bool isTrainingSuccess = AIManager.TrainSystem(path1, path2, path3);
+//		if (isTrainingSuccess) {
+//			print ("Training data ready!");
+//		} else {
+//			print ("Training data Failed :(");
+//		}
 	}
 	
 	// Update is called once per frame

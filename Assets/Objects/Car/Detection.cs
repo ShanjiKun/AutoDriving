@@ -43,5 +43,6 @@ public class Detection : MonoBehaviour {
 
 	void OnTriggerStay2D(Collider2D other){
 		car.onDetectionStay(type, other);
+//		print (other.tag);
 	}
 }

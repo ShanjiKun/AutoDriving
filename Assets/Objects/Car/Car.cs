@@ -77,6 +77,7 @@ public class Car : MonoBehaviour {
 
 	//	For TrafficLights
 	public TrafficLights trafficlights;
+	private bool isStopREDLight;
 
 	//	For AI
 	public bool isResolving;
@@ -98,17 +99,17 @@ public class Car : MonoBehaviour {
 		runable = false;
 
 		//	Handle first state
-		int carPos =  PlayerPrefs.GetInt("CarPos");
-		Speed_KMH = PlayerPrefs.GetInt("Speed");
-
-		runable = true;
+//		int carPos =  PlayerPrefs.GetInt("CarPos");
+//		Speed_KMH = PlayerPrefs.GetInt("Speed");
+//
+//		runable = true;
 
 		//	Handle training for system
-//		bool isTrainingSuccess = AIManager.TrainSystem("", "", "");
-//		if (isTrainingSuccess) {
-//			print ("Training data ready!");
-//			runable = true;
-//		}
+		bool isTrainingSuccess = AIManager.TrainSystem();
+		if (isTrainingSuccess) {
+			print ("Training data ready!");
+			runable = true;
+		}
 
 		//	Test train data
 //		List<string> trainData = AIManager.testTrainSystem();
@@ -204,11 +205,12 @@ public class Car : MonoBehaviour {
 
 	void CARCheckRunWithTrafficLight ()
 	{
-		if (trafficlights != null && (!runable || speed == 0f) && trafficlights.lightType == TrafficLights.LightType.GREEN) {
+		if (trafficlights != null && isStopREDLight && trafficlights.lightType == TrafficLights.LightType.GREEN) {
 			runable = true;
 			isIncSpeed = true;
 			isResolving = false;
-			isInertiaStop = false;	
+			isInertiaStop = false;
+			isStopREDLight = false;
 		}
 	}
 
@@ -239,8 +241,8 @@ public class Car : MonoBehaviour {
 		if (!isIncSpeed)
 			return;
 		
-		float _1per60Speed = Speed_KMH / 60f;
-		speed += _1per60Speed;
+		float _1per30Speed = Speed_KMH / 30f;
+		speed += _1per30Speed;
 
 		if (speed >= Speed_KMH) {
 			speed = Speed_KMH;
@@ -404,23 +406,31 @@ public class Car : MonoBehaviour {
 	{
 		if (isResolving || isInertiaStop)
 			return;
-		print (isInertiaStop);
-		print (isResolving);
+		
 		isResolving = true;
 
 		float dis = distanceToObject (enemy);
 		dis = dis * 5f;
 
+		//	Calculate around
 		int leftArea, rightArea, aheadArea, behindArea;
-		if (currentLane == street.laneLeft) {
-			leftArea = 5;
-			rightArea = 0;
+		TestCaseData testCaseData = enemy.GetComponentInParent<EnemyTestCase>().testCaseData;
+		if (testCaseData != null) {
+			leftArea = testCaseData.left;
+			rightArea = testCaseData.right;
+			aheadArea = testCaseData.front;
+			behindArea = testCaseData.behind;
 		} else {
-			leftArea = 0;
-			rightArea = 5;
+			if (currentLane == street.laneLeft) {
+				leftArea = 5;
+				rightArea = 0;
+			} else {
+				leftArea = 0;
+				rightArea = 5;
+			}
+			aheadArea = 0;
+			behindArea = 0;
 		}
-		aheadArea = 0;
-		behindArea = 0;
 
 		string strDistance = ((int)dis).ToString ();
 		string strSpeed = ((int)speed).ToString ();
@@ -430,7 +440,6 @@ public class Car : MonoBehaviour {
 		string strBehind = behindArea.ToString ();
 
 		print (strDistance + " " + strSpeed + " " + strLeft + " " + strRight + " " + strAhead + " " + strBehind);
-//		List<string> results = NaiveBayes.AI( strDistance, strSpeed, strLeft, strRight, strAhead, strBehind);
 		List<string> results = AIManager.getDecisions( strDistance, strSpeed, strLeft, strRight, strAhead, strBehind);
 		if (results == null || results.Count <= 0) {
 			print ("Unknown decision!!");
@@ -468,7 +477,6 @@ public class Car : MonoBehaviour {
 			isInertiaStop = false;
 		} else if (dec1 == AIManager.QD1_TIEPTUC) {
 			runable = true;
-			isIncSpeed = true;
 			isResolving = false;
 			isInertiaStop = false;
 		} else {
@@ -476,6 +484,7 @@ public class Car : MonoBehaviour {
 			isInertiaStop = true;
 		}
 	}
+
 
 	//
 	//	MARK: Trigger Enemy Handle
@@ -492,6 +501,7 @@ public class Car : MonoBehaviour {
 		if (dis <= 0.5f) {
 			speed = 0f;
 			runable = false;
+			isStopREDLight = true;
 		} else {
 			isResolving = false;
 		}
@@ -544,7 +554,6 @@ public class Car : MonoBehaviour {
 		default:
 			{
 				runable = true;
-				isIncSpeed = true;
 				isResolving = false;
 				isInertiaStop = false;
 			}
@@ -565,7 +574,6 @@ public class Car : MonoBehaviour {
 		default:
 			{
 				runable = true;
-				isIncSpeed = true;
 				isResolving = false;
 				isInertiaStop = false;
 			}
@@ -637,6 +645,7 @@ public class Car : MonoBehaviour {
 	void BODYHandleEnterAnythingElse()
 	{
 		runable = false;
+		speed = 0;
 //		Scene scene = SceneManager.GetActiveScene();
 //		SceneManager.LoadScene(scene.name);	
 	}
@@ -650,6 +659,15 @@ public class Car : MonoBehaviour {
 		case Detection.Type.AHEAD:
 			{
 				switch (other.tag) {
+				case "EnemyTestCase_L_H":
+				case "EnemyTestCase_R_H":
+				case "EnemyTestCase_A_V":
+				case "EnemyTestCase_B_V":
+					{
+						print (1);
+//						print (other.gameObject.GetComponent<EnemyTestCase> ().testCaseData);
+						break;
+					}
 				case "Crossroads":
 					{
 						AHEADHandleEnterCrossroads ();
@@ -657,6 +675,7 @@ public class Car : MonoBehaviour {
 					break;
 				case "Enemy":
 					{
+						print (2);
 						AHEADHandleEnterEnemy (other.gameObject);
 					}
 					break;
@@ -693,10 +712,14 @@ public class Car : MonoBehaviour {
 			{
 				switch (other.tag) {
 				case "Crossroads":
+				case "TrafficLights":
 					{
 						break;
 					}
-				case "TrafficLights":
+				case "EnemyTestCase_L_H":
+				case "EnemyTestCase_R_H":
+				case "EnemyTestCase_A_V":
+				case "EnemyTestCase_B_V":
 					{
 						break;
 					}
@@ -712,6 +735,7 @@ public class Car : MonoBehaviour {
 					}
 				default:
 					{
+						print ("Body enter");
 						BODYHandleEnterAnythingElse ();
 						break;
 					}
@@ -727,8 +751,18 @@ public class Car : MonoBehaviour {
 		case Detection.Type.AHEAD:
 			{
 				switch (other.tag) {
+				case "EnemyTestCase_L_H":
+				case "EnemyTestCase_R_H":
+				case "EnemyTestCase_A_V":
+				case "EnemyTestCase_B_V":
+					{
+//						print (1);
+//						print (other.gameObject.GetComponent<EnemyTestCase> ().testCaseData);
+						break;
+					}
 				case "Enemy":
 					{
+//						print (2);
 						AHEADHandleStayEnemy (other.gameObject);
 					}
 					break;
@@ -760,6 +794,37 @@ public class Car : MonoBehaviour {
 		case Detection.Type.LEFT:
 			{
 				break;
+			}
+		case Detection.Type.BODY:
+			{
+				switch (other.tag) {
+				case "Crossroads":
+				case "TrafficLights":
+					{
+						break;
+					}
+				case "EnemyTestCase_L_H":
+				case "EnemyTestCase_R_H":
+				case "EnemyTestCase_A_V":
+				case "EnemyTestCase_B_V":
+					{
+						break;
+					}
+				case "Lane":
+					{
+						break;
+					}
+				case "Street":
+					{
+						break;
+					}
+				default:
+					{
+						BODYHandleEnterAnythingElse ();
+						break;
+					}
+				}
+				break;	
 			}
 		}
 	}

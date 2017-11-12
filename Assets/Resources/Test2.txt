@@ -4,6 +4,12 @@
 12,30,ReVua
 9,30,ReGap
 6,30,ReGap
+21,80,ReNhe
+18,80,ReNhe
+15,80,ReVua
+12,80,ReVua
+9,80,ReGap
+6,80,ReGap
 21,30,ReNhe
 18,30,ReNhe
 15,30,ReVua
