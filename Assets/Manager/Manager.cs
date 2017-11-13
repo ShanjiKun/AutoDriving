@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AssemblyCSharp;
+using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour {
 
@@ -129,5 +130,17 @@ public class Manager : MonoBehaviour {
 		enemyTC_R_H.transform.position = pos;
 		enemyTC_A_V.transform.position = pos;
 		enemyTC_B_V.transform.position = pos;
+	}
+
+	//	Restart game
+	public void restart()
+	{
+		SceneManager.LoadScene("MainScreen");
+	}
+
+	//	Home game
+	public void home()
+	{
+		SceneManager.LoadScene("Home");
 	}
 }

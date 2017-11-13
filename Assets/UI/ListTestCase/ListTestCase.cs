@@ -3,22 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using System;
 
 public class ListTestCase : MonoBehaviour {
 
 	public GameObject content;
 
-	private string parentPath = "Assets/Resources/";
-
-	//	First call
-	void Awake()
-	{
-		initialListTestCase ();
-	}
-
 	// Use this for initialization
 	void Start () {
-		
+		//	Init
+		initialListTestCase ();
 	}
 	
 	// Update is called once per frame
@@ -30,7 +24,7 @@ public class ListTestCase : MonoBehaviour {
 	void initialListTestCase()
 	{	
 		//	Load test cases from file
-		string path = parentPath + "TestCase.txt";
+		string path = PlayerPrefs.GetString("Path4");
 		List<string> testCases = loadTestCasesFromFile (path);
 
 		//	Load test cases

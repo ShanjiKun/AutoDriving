@@ -5,6 +5,7 @@ using System.IO;
 
 namespace AssemblyCSharp
 {
+	[System.Serializable]
 	public class CustomNaiveBayes
 	{
 		//	Define List properties and BClass
@@ -14,7 +15,7 @@ namespace AssemblyCSharp
 		private int numberOfElemInLine;
 
 		//	Setup Single Ton for dicision1
-		static CustomNaiveBayes decision1;
+		public static CustomNaiveBayes decision1;
 		public static CustomNaiveBayes sharedDecision1()
 		{
 			if (decision1 == null) {
@@ -24,7 +25,7 @@ namespace AssemblyCSharp
 		}
 
 		//	Setup Single Ton for dicision2
-		static CustomNaiveBayes decision2;
+		public static CustomNaiveBayes decision2;
 		public static CustomNaiveBayes sharedDecision2()
 		{
 			if (decision2 == null) {
@@ -34,7 +35,7 @@ namespace AssemblyCSharp
 		}
 
 		//	Setup Single Ton for dicision3
-		static CustomNaiveBayes decision3;
+		public static CustomNaiveBayes decision3;
 		public static CustomNaiveBayes sharedDecision3()
 		{
 			if (decision3 == null) {
@@ -302,6 +303,7 @@ namespace AssemblyCSharp
 		}
 	}
 
+	[System.Serializable]
 	public class Properties {
 		public string name { get; set ;}
 		public Dictionary<string, int> dictClass = new Dictionary<string, int>();		// Key: className, value: count(number of prop in this class)
@@ -356,6 +358,7 @@ namespace AssemblyCSharp
 		}
 	}
 
+	[System.Serializable]
 	public class BClass {
 		public string name { get; set;}
 		public int count { get; set;}

@@ -106,17 +106,17 @@ public class Car : MonoBehaviour {
 
 		//	Handle first state
 //		int carPos =  PlayerPrefs.GetInt("CarPos");
-//		Speed_KMH = PlayerPrefs.GetInt("Speed");
+		Speed_KMH = PlayerPrefs.GetInt("Speed");
 //
-//		runable = true;
+		runable = true;
 
 		//	Handle training for system
-		bool isTrainingSuccess = AIManager.TrainSystem();
-		if (isTrainingSuccess) {
-			print ("Training data ready!");
-			customLog.log ("Training data ready!");
-			runable = true;
-		}
+//		bool isTrainingSuccess = AIManager.TrainSystem();
+//		if (isTrainingSuccess) {
+//			print ("Training data ready!");
+//			customLog.log ("Training data ready!");
+//			runable = true;
+//		}
 	}
 
 	// Use this for initialization

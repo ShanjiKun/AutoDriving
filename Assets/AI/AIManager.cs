@@ -6,13 +6,6 @@ using System.IO;
 
 public class AIManager {
 
-	//	For path training data
-	#if UNITY_EDITOR
-	public static string parentPath = "Assets/Resources/";
-	#else
-	public static string parentPath = Application.dataPath + "/TrainingData/"
-	#endif
-
 	//	Define classes
 	public static string QD1_TIEPTUC 	= "TiepTuc";
 	public static string QD1_GIAMRETRAI = "GiamReTrai";
@@ -39,18 +32,14 @@ public class AIManager {
 	public static List<int> speedRanges = new List<int>{0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 	public static List<int> distanceRanges = new List<int>{0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30};
 
-//	public static bool TrainSystem(string path1, string path2, string path3)
-	public static bool TrainSystem()
+	public static bool TrainSystem(string path1, string path2, string path3)
 	{
-		string path1 = parentPath + "Test1.txt";
 		List<string> trainData1 = getTrainDataFromFile (path1, DecisionType.DEC1);
 		bool isState1 = CustomNaiveBayes.sharedDecision1().trainSystemWithData(trainData1);
 
-		string path2 = parentPath + "Test2.txt";
 		List<string> trainData2 = getTrainDataFromFile (path2, DecisionType.DEC2);
 		bool isState2 = CustomNaiveBayes.sharedDecision2().trainSystemWithData(trainData2);
 
-		string path3 = parentPath + "Test3.txt";
 		List<string> trainData3 = getTrainDataFromFile (path3, DecisionType.DEC3);
 		bool isState3 = CustomNaiveBayes.sharedDecision3().trainSystemWithData(trainData3);
 
@@ -157,10 +146,4 @@ public class AIManager {
 		return i.ToString();
 	}
 
-	//	For test
-	public static List<string> testTrainSystem()
-	{
-		string path1 = parentPath + "Test1.txt";
-		return getTrainDataFromFile (path1, DecisionType.DEC1);
-	}
 }
