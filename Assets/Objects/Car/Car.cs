@@ -42,7 +42,6 @@ public class Car : MonoBehaviour {
 	public Street street;
 	public GameObject motor;
 
-
 	public float testTime = 0;
 	private float fps = 0;
 	public float fpsTest = 0;
@@ -254,7 +253,7 @@ public class Car : MonoBehaviour {
 	void CARSlowDown()
 	{
 		
-		if (!isDesSpeed)
+		if (!isDesSpeed || isInertiaStop)
 			return;
 		
 		float _1per30Speed = Speed_KMH / 30f;
@@ -464,7 +463,9 @@ public class Car : MonoBehaviour {
 
 			if (dec2 == AIManager.QD2_REGAP) {
 				setupTurnToLane (TurnToLane.HARD);
-				isInertiaStop = true;
+				if (dec3 == NaiveBayes.QD3_DUNG) {
+					isInertiaStop = true;	
+				}
 			} else if (dec2 == AIManager.QD2_REVUA) {
 				setupTurnToLane (TurnToLane.MEDIUM);
 			} else {
@@ -515,10 +516,38 @@ public class Car : MonoBehaviour {
 	//	MARK: Detection handle
 	//
 	// AHEAD
-	void AHEADHandleEnterCrossroads()
+	void AHEADHandleEnterCrossroads(GameObject obj)
 	{
-			isDesSpeed = true;
-			isIncSpeed = false;
+		isDesSpeed = true;
+		isIncSpeed = false;
+
+		//	Random TurnType
+		List<TurnType> ableTurns;
+		switch (direction){
+		case Direction.NORTH:
+			{
+				ableTurns = obj.GetComponent<Crossroads> ().ableTurns_N;
+			}
+			break;
+		case Direction.SOUTH:
+			{
+				ableTurns = obj.GetComponent<Crossroads> ().ableTurns_S;
+			}
+			break;
+		case Direction.WEST:
+			{
+				ableTurns = obj.GetComponent<Crossroads> ().ableTurns_W;
+			}
+			break;
+		default:
+			{
+				ableTurns = obj.GetComponent<Crossroads> ().ableTurns_E;
+			}
+			break;
+		}
+
+		int ran = Random.Range(0, ableTurns.Count);
+		planTurnType = ableTurns [ran];
 	}
 
 	void AHEADHandleEnterEnemy(GameObject enemy)
@@ -559,7 +588,7 @@ public class Car : MonoBehaviour {
 			{
 				runable = true;
 				isResolving = false;
-				isInertiaStop = false;
+//				isInertiaStop = false;
 			}
 			break;
 		}
@@ -579,7 +608,7 @@ public class Car : MonoBehaviour {
 			{
 				runable = true;
 				isResolving = false;
-				isInertiaStop = false;
+//				isInertiaStop = false;
 			}
 			break;
 		}
@@ -672,7 +701,7 @@ public class Car : MonoBehaviour {
 					}
 				case "Crossroads":
 					{
-						AHEADHandleEnterCrossroads ();
+						AHEADHandleEnterCrossroads (other.gameObject);
 					}
 					break;
 				case "Enemy":

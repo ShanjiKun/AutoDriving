@@ -539,6 +539,10 @@ MonoBehaviour:
   position: 0
   street1: {fileID: 0}
   street2: {fileID: 0}
+  ableTurns_N: 01000000
+  ableTurns_W: 00000000
+  ableTurns_S: 
+  ableTurns_E: 
 --- !u!61 &38352220
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -550,7 +554,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_UsedByComposite: 1
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -2376,7 +2380,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 262453829}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 50, y: 50, z: 1}
+  m_LocalPosition: {x: -50, y: -50, z: 1}
   m_LocalScale: {x: 1.5, y: 0.75, z: 1}
   m_Children:
   - {fileID: 1996900553}
@@ -2823,6 +2827,10 @@ MonoBehaviour:
   position: 4
   street1: {fileID: 0}
   street2: {fileID: 0}
+  ableTurns_N: 000000000100000002000000
+  ableTurns_W: 000000000100000002000000
+  ableTurns_S: 000000000100000002000000
+  ableTurns_E: 000000000100000002000000
 --- !u!61 &289099880
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7626,6 +7634,10 @@ MonoBehaviour:
   position: 6
   street1: {fileID: 0}
   street2: {fileID: 0}
+  ableTurns_N: 
+  ableTurns_W: 01000000
+  ableTurns_S: 00000000
+  ableTurns_E: 
 --- !u!61 &790915426
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12052,6 +12064,10 @@ MonoBehaviour:
   position: 1
   street1: {fileID: 570163050}
   street2: {fileID: 1277388326}
+  ableTurns_N: 0000000001000000
+  ableTurns_W: 0000000002000000
+  ableTurns_S: 
+  ableTurns_E: 0200000001000000
 --- !u!61 &1228602470
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13244,6 +13260,10 @@ MonoBehaviour:
   position: 7
   street1: {fileID: 0}
   street2: {fileID: 0}
+  ableTurns_N: 
+  ableTurns_W: 0200000001000000
+  ableTurns_S: 0000000001000000
+  ableTurns_E: 0000000002000000
 --- !u!61 &1372876763
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13489,6 +13509,10 @@ MonoBehaviour:
   position: 8
   street1: {fileID: 0}
   street2: {fileID: 0}
+  ableTurns_N: 
+  ableTurns_W: 
+  ableTurns_S: 01000000
+  ableTurns_E: 00000000
 --- !u!61 &1401401662
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -16091,6 +16115,10 @@ MonoBehaviour:
   position: 3
   street1: {fileID: 0}
   street2: {fileID: 0}
+  ableTurns_N: 0200000001000000
+  ableTurns_W: 0100000000000000
+  ableTurns_S: 0200000000000000
+  ableTurns_E: 
 --- !u!61 &1675843384
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17957,6 +17985,10 @@ MonoBehaviour:
   position: 2
   street1: {fileID: 0}
   street2: {fileID: 0}
+  ableTurns_N: 00000000
+  ableTurns_W: 
+  ableTurns_S: 
+  ableTurns_E: 01000000
 --- !u!61 &1862378634
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20271,6 +20303,10 @@ MonoBehaviour:
   position: 5
   street1: {fileID: 0}
   street2: {fileID: 0}
+  ableTurns_N: 0000000002000000
+  ableTurns_W: 
+  ableTurns_S: 0100000002000000
+  ableTurns_E: 0000000001000000
 --- !u!61 &2136684767
 BoxCollider2D:
   m_ObjectHideFlags: 0

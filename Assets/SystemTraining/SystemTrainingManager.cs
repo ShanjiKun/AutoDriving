@@ -15,9 +15,17 @@ public class SystemTrainingManager : MonoBehaviour {
 
 	public Text txTraining;
 	public Text state;
+	public Button btnGo;
 	private float timeCount;
 	private int times = 0;
 	private bool moveToMainScreen;
+
+	void Awake () {
+		btnGo.onClick.AddListener(delegate {
+			navigateToMainScreen();
+		});
+		btnGo.enabled = false;
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -33,6 +41,7 @@ public class SystemTrainingManager : MonoBehaviour {
 			if (isTrainingSuccess) {
 				state.text = "New training data ready!";
 				saveTrainData ();
+				btnGo.enabled = true;
 			} else {
 				state.text = "New training data Failed :(";
 			}
@@ -44,14 +53,17 @@ public class SystemTrainingManager : MonoBehaviour {
 				state.text = "Load training data Failed :(";
 			} else {
 				state.text = "Load training data success!";
+				btnGo.enabled = true;
 			}
 		}
+
+		txTraining.enabled = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		timeCount += Time.deltaTime;
-		if (timeCount >= 0.5f && !moveToMainScreen) {
+		if (timeCount >= 0.5f) {
 			times++;
 			timeCount = 0;
 			switch (txTraining.text) {
@@ -64,11 +76,6 @@ public class SystemTrainingManager : MonoBehaviour {
 			default:
 				txTraining.text = "Training...";
 				break;
-			}
-
-			if (times > 4) {
-				moveToMainScreen = true;
-				navigateToMainScreen ();
 			}
 		}
 	}

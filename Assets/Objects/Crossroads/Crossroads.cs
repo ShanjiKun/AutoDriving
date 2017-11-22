@@ -21,6 +21,11 @@ public class Crossroads : MonoBehaviour {
 	public Street street1;
 	public Street street2;
 
+	public List<Car.TurnType> ableTurns_N;
+	public List<Car.TurnType> ableTurns_W;
+	public List<Car.TurnType> ableTurns_S;
+	public List<Car.TurnType> ableTurns_E;
+
 	// Use this for initialization
 	void Start () {
 		
