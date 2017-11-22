@@ -35,7 +35,7 @@ public class TrafficLights : MonoBehaviour {
 		switch (lightType) {
 		case LightType.RED:
 			{
-				if (time >= 4) {
+				if (time >= 6) {
 					time = 0;
 					lightType = LightType.GREEN;
 					updateLight ();
@@ -53,7 +53,7 @@ public class TrafficLights : MonoBehaviour {
 			}
 		case LightType.GREEN:
 			{
-				if (time >= 5) {
+				if (time >= 2) {
 					time = 0;
 					lightType = LightType.YELLOW;
 					updateLight ();

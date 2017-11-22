@@ -18,6 +18,7 @@ public class Street : MonoBehaviour {
 	private float TURN_MEDIUM_Rotate = 20f;
 	private float TURN_HARD_Rotate = 30f;
 
+	//	Lane
 	public Lane switchLane(Lane lane)
 	{
 		if (lane == laneLeft)
@@ -26,6 +27,7 @@ public class Street : MonoBehaviour {
 		return laneLeft;
 	}
 
+	//`Get turnRotate
 	public float turnRotate(Lane currentLane, Car.TurnToLane turnType)
 	{
 		float rotate;

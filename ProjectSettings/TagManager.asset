@@ -11,6 +11,12 @@ TagManager:
   - Lane
   - Street
   - TrafficLights
+  - EnemyTestCase_L_H
+  - EnemyTestCase_R_H
+  - EnemyTestCase_A_V
+  - EnemyTestCase_B_V
+  - DetectMouseDown
+  - CustomLog
   layers:
   - Default
   - TransparentFX

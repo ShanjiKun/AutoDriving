@@ -21,30 +21,34 @@ public class HomeManager : MonoBehaviour {
 	//	Car position
 	public Dropdown carPosDropdown;
 
+	//	Toggle
+
 	//	Speed
 	public InputField speedField;
+
+	//	Directory
+	public Text directory;
 
 	//	Choose training data 1
 	public InputField tfDirectory1;
 	public string pathFile1 = "";
-	public Button btnBrowser1;
-
 	//	Choose training data 2
 	public InputField tfDirectory2;
 	public string pathFile2 = "";
-	public Button btnBrowser2;
 
 	//	Choose training data 3
 	public InputField tfDirectory3;
 	public string pathFile3 = "";
-	public Button btnBrowser3;
 
-	public TextAsset t1;
-	public TextAsset t2;
-	public TextAsset t3;
+	//	Choose Test case
+	public InputField tfDirectory4;
+	public string pathFile4 = "";
 
 	//	Button Run
 	public Button btnRun;
+
+	//	
+	public string parentPath;
 
 	// Call first
 	void Awake () {
@@ -52,19 +56,6 @@ public class HomeManager : MonoBehaviour {
 		//	Setup dropdown lisetener
 		carPosDropdown.onValueChanged.AddListener (delegate {
 			onCarPosDropdownChanged(carPosDropdown);
-		});
-
-		//	Setup buttons browser
-		btnBrowser1.onClick.AddListener(delegate {
-			onChooseDirectory(DirectoryType.DIRECTORY1);
-		});
-
-		btnBrowser2.onClick.AddListener(delegate {
-			onChooseDirectory(DirectoryType.DIRECTORY2);
-		});
-
-		btnBrowser3.onClick.AddListener(delegate { 
-			onChooseDirectory(DirectoryType.DIRECTORY3);
 		});
 
 		//	Setup button RUN
@@ -76,9 +67,18 @@ public class HomeManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		pathFile1 = tfDirectory1.text = "Assets/Resources/Test1.txt";
-		pathFile2 = tfDirectory2.text = "Assets/Resources/Test2.txt";
-		pathFile3 = tfDirectory3.text = "Assets/Resources/Test3.txt";
+		//	Set parent path
+		parentPath = Application.dataPath + "/TrainingData/";
+		#if UNITY_EDITOR
+		parentPath = "Assets/Resources/";
+		#endif
+
+		directory.text = parentPath;
+
+//		pathFile1 = tfDirectory1.text = "Train1.txt";
+//		pathFile2 = tfDirectory2.text = "Train2.txt";
+//		pathFile3 = tfDirectory3.text = "Train3.txt";
+//		pathFile4 = tfDirectory4.text = "TestCase.txt";
 	}
 	
 	// Update is called once per frame
@@ -91,6 +91,12 @@ public class HomeManager : MonoBehaviour {
 		print (target.value);
 	}
 
+	//	Toggle value changed
+	public void toggleChanged(Boolean isOn)
+	{
+		print (isOn);
+	}
+
 	// 	On Run the car
 	private void onRunTheCar()
 	{
@@ -98,14 +104,25 @@ public class HomeManager : MonoBehaviour {
 		if (!validateFields ())
 			return;
 
+		pathFile1 = tfDirectory1.text;
+		pathFile2 = tfDirectory2.text;
+		pathFile3 = tfDirectory3.text;
+		pathFile4 = tfDirectory4.text;
+
 		int carPos = carPosDropdown.value;
 		int speed =  System.Convert.ToInt32(speedField.text);
 
 		PlayerPrefs.SetInt("CarPos", carPos);
 		PlayerPrefs.SetInt("Speed", speed);
-		PlayerPrefs.SetString("Path1", pathFile1);
-		PlayerPrefs.SetString("Path2", pathFile2);
-		PlayerPrefs.SetString("Path3", pathFile3);
+		if (pathFile1 == "" || pathFile2 == "" || pathFile3 == "" || pathFile4 == "") {
+			PlayerPrefs.SetString("isTrainNewData", "NO");
+		} else {
+			PlayerPrefs.SetString("isTrainNewData", "YES");
+			PlayerPrefs.SetString("Path1", parentPath + pathFile1);
+			PlayerPrefs.SetString("Path2", parentPath + pathFile2);
+			PlayerPrefs.SetString("Path3", parentPath + pathFile3);
+			PlayerPrefs.SetString("Path4", parentPath + pathFile4);
+		}
 
 		SceneManager.LoadScene("SystemTraining");	
 	}
@@ -113,63 +130,12 @@ public class HomeManager : MonoBehaviour {
 	private bool validateFields()
 	{
 		if (speedField.text.Length == 0 || !IsDigitsOnly (speedField.text)) {
-			showAlert ("Speed error!", "Speed is just number");
-			return false;
-		}
-
-		if (pathFile1 == "" || pathFile2 == "" || pathFile3 == "") {
-			showAlert ("Train data paths error!", "Enter fully 3 paths.");
 			return false;
 		}
 
 		return true;
 	}
-
-	//	On browser
-	private void onChooseDirectory (DirectoryType type)
-	{
-		string path = chooseFile ();
-		//	Cut path
-		string shortPath = path;
-		string [] pathElems = path.Split("/"[0]);
-		if (pathElems.Length > 3) {
-			shortPath = pathElems [pathElems.Length - 3] + "/" + pathElems [pathElems.Length - 2] + "/" + pathElems [pathElems.Length - 1];
-		}
-
-		switch (type) {
-		case DirectoryType.DIRECTORY1:
-			{
-				pathFile1 = path;
-				tfDirectory1.text = shortPath;
-			}
-			break;
-		case DirectoryType.DIRECTORY2:
-			{
-				pathFile2 = path;
-				tfDirectory2.text = shortPath;
-			}
-			break;
-		default:
-			{
-				pathFile3 = path;
-				tfDirectory3.text = shortPath;
-			}
-			break;
-		}	
-	}
-
-	//	Choose a file
-	private string chooseFile()
-	{
-		#if UNITY_EDITOR
-		string path = EditorUtility.OpenFilePanel("Choose training data:", "", "txt");
-		if (path.Length != 0) {
-			return path;
-		}
-		#endif
-		return "";
-	}
-
+		
 	private bool IsDigitsOnly(string str)
 	{
 		foreach (char c in str)
@@ -180,16 +146,4 @@ public class HomeManager : MonoBehaviour {
 
 		return true;
 	}
-
-	private void showAlert(string title, string message)
-	{
-		#if UNITY_EDITOR
-		EditorUtility.DisplayDialog (title,
-			message, "OK", "Cancel");
-		#endif
-	}
-
-	//	Open File Panel
-	// PlayerPrefs.SetInt("SavedNumber", numberToSave);
-	// number = PlayerPrefs.GetInt("SavedNumber");
 }
